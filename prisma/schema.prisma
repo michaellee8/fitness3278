@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model branch {
+  id                Int                 @id @default(autoincrement())
+  name              String              @db.Text
+  address           String              @db.Text
+  district          String              @db.Text
+  branch_instructor branch_instructor[]
+  class             Renamedclass[]      @relation("branchToclass")
+
+  @@index([address], map: "address")
+  @@index([district], map: "district")
+  @@index([name], map: "name")
+}
+
+model branch_instructor {
+  branch_id     Int
+  instructor_id Int
+  branch        branch     @relation(fields: [branch_id], references: [id], onUpdate: Restrict, map: "branch_instructor_branch_id")
+  instructor    instructor @relation(fields: [instructor_id], references: [id], onUpdate: Restrict, map: "branch_instructor_instructor_id")
+
+  @@unique([branch_id, instructor_id], map: "branch_instructor_id")
+  @@index([instructor_id], map: "branch_instructor_instructor_id")
+}
+
+/// This model has been renamed to 'Renamedclass' during introspection, because the original name 'class' is reserved.
+model Renamedclass {
+  id            Int        @id @default(autoincrement())
+  branch_num    Int
+  branch_id     Int
+  datetime      DateTime   @default(now()) @db.Timestamp(0)
+  capacity      Int
+  instructor_id Int
+  branch        branch     @relation("branchToclass", fields: [branch_id], references: [id], onUpdate: Restrict, map: "class_branch_id")
+  instructor    instructor @relation("classToinstructor", fields: [instructor_id], references: [id], onUpdate: Restrict, map: "class_instructor_id")
+
+  @@unique([branch_id, branch_num], map: "branch_num")
+  @@index([branch_id], map: "branch_id")
+  @@index([instructor_id], map: "instructor_id")
+  @@map("class")
+}
+
+model instructor {
+  id                Int                 @id @default(autoincrement())
+  start_date        DateTime            @db.Date
+  name              String              @db.Text
+  branch_instructor branch_instructor[]
+  class             Renamedclass[]      @relation("classToinstructor")
+
+  @@index([name], map: "name")
+  @@index([start_date], map: "start_date")
+}
