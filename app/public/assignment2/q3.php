@@ -6,7 +6,7 @@ include("connect.php");
 $query = "
 SELECT class_ID, name, description, date
 FROM Class
-WHERE LOWER(name) LIKE '%Yoga' OR (LOWER(description) LIKE '%Hatha%' OR LOWER(description) LIKE '%Ashtanga%')
+WHERE LOWER(name) LIKE 'Yoga%' OR (LOWER(description) LIKE '%Hatha%' AND LOWER(description) LIKE '%Ashtanga%')
 ORDER BY class_ID DESC
 ";
 
