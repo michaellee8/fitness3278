@@ -16,7 +16,7 @@ ORDER BY C.class_ID DESC
 ";
 
 // execute the query
-$result = mysqli_query($con,$query) or die( "Unable to execute query:".mysqli_error($con));
+$result = mysqli_query($con, $query) or die("Unable to execute query:" . mysqli_error($con));
 
 echo "<!DOCTYPE html><html>";
 echo "<head>";
@@ -36,14 +36,14 @@ echo "<td>num_of_enrollment</td>";
 echo "</tr>";
 
 // print data with HTML
-while($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
-{
+while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+    $id = $row['class_ID'];
     echo "<tr>";
-    echo "<td>".$row['class_ID']."</td>";
-    echo "<td>".$row['name']."</td>";
-    echo "<td>".$row['date']."</td>";
-    echo "<td>".$row['capacity']."</td>";
-    echo "<td>".$row['num_of_enrollment']."</td>";
+    echo "<td>" . $row['class_ID'] . "</td>";
+    echo "<td><a href='q10.php?class_ID=$id'>" . $row['name'] . "</a><br></td>";
+    echo "<td>" . $row['date'] . "</td>";
+    echo "<td>" . $row['capacity'] . "</td>";
+    echo "<td>" . $row['num_of_enrollment'] . "</td>";
     echo "</tr>";
 }
 echo "</table>";
