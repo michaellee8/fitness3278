@@ -1,7 +1,7 @@
 <?php
 include("connect.php");
 
-$branch_id = mysqli_real_escape_string($con, $_POST["ID"]);
+$class_id = mysqli_real_escape_string($con, $_POST["class_ID"]);
 
 // prepare the database query
 // select the branch_ID and name of the branches in the “Tai Po” district.
@@ -10,7 +10,7 @@ SELECT C.class_ID, C.name, C.date, C.capacity, COUNT(E.member_ID) AS num_of_enro
 FROM Class C
          JOIN Branch B on B.branch_ID = C.branch_ID
          LEFT JOIN Enrollment E on C.class_ID = E.class_ID
-WHERE B.branch_ID = '$branch_id'
+WHERE B.branch_ID = '$class_id'
 GROUP BY C.class_ID
 ORDER BY C.class_ID DESC
 ";
