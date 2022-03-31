@@ -1,0 +1,26 @@
+version: "3"
+services:
+  db:
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=very-secure-password
+      - MYSQL_DATABASE=mydb
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+  web:
+    image: nginx:1.18.0
+    ports:
+      - 8080:8080
+    volumes:
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/conf.d/nginx.conf
+      - ./app:/app
+  php:
+    image: php:8.0-fpm
+    volumes:
+      - ./app:/app
+volumes:
+  mysql_data:
