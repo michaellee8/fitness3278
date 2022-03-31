@@ -4,10 +4,10 @@ include("connect.php");
 // prepare the database query
 // select the branch_ID and name of the branches in the “Tai Po” district.
 $query = "
-SELECT instructor_ID, name, year_of_experience
-FROM Instructor
-WHERE year_of_experience >= 2
-ORDER BY year_of_experience DESC, instructor_ID ASC
+SELECT class_ID, name, description, date
+FROM Class
+WHERE LOWER(name) LIKE '%Yoga' OR (LOWER(description) LIKE '%Hatha%' OR LOWER(description) LIKE '%Ashtanga%')
+ORDER BY class_ID DESC
 ";
 
 // execute the query
@@ -15,26 +15,28 @@ $result = mysqli_query($con,$query) or die( "Unable to execute query:".mysqli_er
 
 echo "<!DOCTYPE html><html>";
 echo "<head>";
-echo "<title>Question 2</title>";
+echo "<title>Question 3</title>";
 echo "</head>";
 echo "<body  align=center>";
-echo "<h3>Q2 Answer</h3>";
+echo "<h3>Q3 Answer</h3>";
 
 // display the table
 echo "<table border='1' align='center'>";
 echo "<tr>";
-echo "<td>instructor_ID</td>";
+echo "<td>class_ID</td>";
 echo "<td>name</td>";
-echo "<td>year_of_experience</td>";
+echo "<td>description</td>";
+echo "<td>date</td>";
 echo "</tr>";
 
 // print data with HTML
 while($row = mysqli_fetch_array($result, MYSQLI_ASSOC))
 {
     echo "<tr>";
-    echo "<td>".$row['instructor_ID']."</td>";
+    echo "<td>".$row['class_ID']."</td>";
     echo "<td>".$row['name']."</td>";
-    echo "<td>".$row['year_of_experience']."</td>";
+    echo "<td>".$row['description']."</td>";
+    echo "<td>".$row['date']."</td>";
     echo "</tr>";
 }
 echo "</table>";
